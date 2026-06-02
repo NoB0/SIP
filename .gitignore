@@ -1,0 +1,9 @@
+.devcontainer/
+
+__pycache__/
+*.py[codz]
+*$py.class
+
+log/
+output/
+*.pkl

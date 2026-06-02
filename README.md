@@ -1,5 +1,5 @@
 # System Initiative Prediction (SIP)
-![](https://api.visitorbadge.io/api/VisitorHit?user=ChuanMeng&repo=SIP&countColor=%237B1E7A)
+![Python](https://img.shields.io/badge/python-3.12-blue.svg)
 
 This is the code repository for the paper titled [System Initiative Prediction for Multi-turn Conversational Information Seeking](https://dl.acm.org/doi/10.1145/3583780.3615070), which got accepted at The 32nd ACM International Conference on Information and Knowledge Management (CIKM 2023) as a long paper.  
 
