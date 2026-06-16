@@ -204,24 +204,25 @@ python -u ./model/Run.py \
 --model DistanceCRF \
 --input_path ./dataset/MSDialog/train_MSDialog.pkl \
 --output_path ./output/ \
---log_path ./log/ \
---mode train
+--mode train \
+--wandb_entity {name of your wandb entity}
 
 python -u ./model/Run.py \
 --task SIP \
 --model DistanceCRF \
 --input_path ./dataset/MSDialog/valid_MSDialog.pkl \
 --output_path ./output/ \
---log_path ./log/ \
---mode inference
+--mode inference \
+--wandb_entity {name of your wandb entity}
+
 
 python -u ./model/Run.py \
 --task SIP \
 --model DistanceCRF \
 --input_path ./dataset/MSDialog/test_MSDialog.pkl \
 --output_path ./output/ \
---log_path ./log/ \
---mode inference
+--mode inference \
+--wandb_entity {name of your wandb entity}
 ```
 The above commands would produce model checkpoints and inference output files, which are stored in the paths `./output/MSDialog.SIP.DistanceCRF/checkpoints/` and `./output/MSDialog.SIP.DistanceCRF/`, respectively.
 
@@ -233,24 +234,24 @@ python -u ./model/Run.py \
 --model DistanceCRF \
 --input_path ./dataset/ClariQ/train_ClariQ.pkl \
 --output_path ./output/ \
---log_path ./log/ \
---mode train \
+--mode train \ 
+--wandb_entity {name of your wandb entity}
 
 python -u ./model/Run.py \
 --task SIP \
 --model DistanceCRF \
 --input_path ./dataset/ClariQ/valid_ClariQ.pkl \
 --output_path ./output/ \
---log_path ./log/ \
 --mode inference \
+--wandb_entity {name of your wandb entity}
 
 python -u ./model/Run.py \
 --task SIP \
 --model DistanceCRF \
 --input_path ./dataset/ClariQ/test_ClariQ.pkl \
 --output_path ./output/ \
---log_path ./log/ \
 --mode inference \
+--wandb_entity {name of your wandb entity}
 ```
 The above commands would produce model checkpoints and inference output files, which are saved in the paths `./output/ClariQ.SIP.DistanceCRF/checkpoints/` and `./output/ClariQ.SIP.DistanceCRF/`, respectively.
 
@@ -261,27 +262,27 @@ python -u ./model/Run.py \
 --model DistanceCRF \
 --input_path ./dataset/ClariQ/train_ClariQ.pkl \
 --output_path ./output/ \
---log_path ./log/ \
 --initialization_path {your local path to the checkpoint trained on SIP on MSDialog} \
 --mode train \
+--wandb_entity {name of your wandb entity}
 
 python -u ./model/Run.py \
 --task SIP \
 --model DistanceCRF \
 --input_path ./dataset/ClariQ/valid_ClariQ.pkl \
 --output_path ./output/ \
---log_path ./log/ \
 --initialization_path {your local path to the checkpoint trained on SIP on MSDialog} \
 --mode inference \
+--wandb_entity {name of your wandb entity}
 
 python -u ./model/Run.py \
 --task SIP \
 --model DistanceCRF \
 --input_path ./dataset/ClariQ/test_ClariQ.pkl \
 --output_path ./output/ \
---log_path ./log/ \
 --initialization_path {your local path to the checkpoint trained on SIP on MSDialog} \
 --mode inference \
+--wandb_entity {name of your wandb entity}
 ```
 Please specify `--initialization_path`, which shows your local path to the checkpoint trained on SIP on MSDialog.
 The above commands would produce checkpoints, which would be saved in the paths `./output/ClariQ.SIP.DistanceCRF-TransferLearning/checkpoints/`; the inference output files would be saved in the path `./output/ClariQ.SIP.DistanceCRF-TransferLearning/`.
@@ -291,7 +292,7 @@ Evaluate LLaMA on the test set of WISE:
 ```bash
 python -u Evaluation.py \
 --prediction_path ./output/WISE.SIP.LLaMA-zh-7B-plus \
---label_path ./dataset/WISE/test_WISE.pkl
+--label_path ./dataset/WISE/test_WISE.pkl 
 
 python -u Evaluation.py \
 --prediction_path ./output/WISE.SIP.LLaMA-zh-13B-plus \
@@ -303,7 +304,7 @@ Evaluate LLaMA on the test set of MSDialog:
 ```bash
 python -u Evaluation.py \
 --prediction_path ./output/MSDialog.SIP.LLaMA-7B \
---label_path ./dataset/MSDialog/test_MSDialog.pkl
+--label_path ./dataset/MSDialog/test_MSDialog.pkl 
 
 python -u Evaluation.py \
 --prediction_path ./output/MSDialog.SIP.LLaMA-13B \
@@ -335,11 +336,15 @@ Evaluate MuSIc on the validation and test sets of MSDialog:
 ```bash
 python -u Evaluation.py \
 --prediction_path ./output/MSDialog.SIP.DistanceCRF \
---label_path ./dataset/MSDialog/valid_MSDialog.pkl
+--label_path ./dataset/MSDialog/valid_MSDialog.pkl \
+--wandb_entity {name of your wandb entity} \
+--run_name \
 
 python -u Evaluation.py \
 --prediction_path ./output/MSDialog.SIP.DistanceCRF \
---label_path ./dataset/MSDialog/test_MSDialog.pkl
+--label_path ./dataset/MSDialog/test_MSDialog.pkl \
+--wandb_entity {name of your wandb entity} \
+--run_name \
 ```
 The files recording the evaluation results would be saved in the path `./output/MSDialog.SIP.DistanceCRF/`.
 
@@ -347,11 +352,15 @@ Evaluate MuSIc (without pre-training on SIP) on the validation and test sets of 
 ```bash
 python -u Evaluation.py \
 --prediction_path ./output/ClariQ.SIP.DistanceCRF \
---label_path ./dataset/ClariQ/valid_ClariQ.pkl
+--label_path ./dataset/ClariQ/valid_ClariQ.pkl \
+--wandb_entity {name of your wandb entity} \
+--run_name \
 
 python -u Evaluation.py \
 --prediction_path ./output/ClariQ.SIP.DistanceCRF \
---label_path ./dataset/ClariQ/test_ClariQ.pkl
+--label_path ./dataset/ClariQ/test_ClariQ.pkl \
+--wandb_entity {name of your wandb entity} \
+--run_name \
 ```
 The files recording the evaluation results would be saved in the path `./output/ClariQ.SIP.DistanceCRF/`.
 
@@ -359,11 +368,15 @@ Evaluate MuSIc (with pre-training on SIP) on the validation and test sets of Cla
 ```bash
 python -u Evaluation.py \
 --prediction_path ./output/ClariQ.SIP.DistanceCRF-TransferLearning \
---label_path ./dataset/ClariQ/valid_ClariQ.pkl
+--label_path ./dataset/ClariQ/valid_ClariQ.pkl \
+--wandb_entity {name of your wandb entity} \
+--run_name \
 
 python -u Evaluation.py \
 --prediction_path ./output/ClariQ.SIP.DistanceCRF-TransferLearning \
---label_path ./dataset/ClariQ/test_ClariQ.pkl
+--label_path ./dataset/ClariQ/test_ClariQ.pkl \
+--wandb_entity {name of your wandb entity} \
+--run_name \
 ```
 The files recording the evaluation results would be saved in the path `./output/ClariQ.SIP.DistanceCRF-TransferLearning/`.
 

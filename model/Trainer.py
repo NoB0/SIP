@@ -1,16 +1,12 @@
-from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_score, recall_score
-import json
 import os
-from collections import defaultdict
 import torch
-import codecs
 import time
 import sys
+import wandb
 from model.Utils import rounder
-import numpy as np
 
 class Trainer(object):
-    def __init__(self, args, model, writer=None):
+    def __init__(self, args, model):
         super(Trainer, self).__init__()
         self.args = args
 
@@ -22,7 +18,6 @@ class Trainer(object):
         self.eval_model = self.model
 
         self.accumulation_count = 0
-        self.writer = writer
 
     def train_batch(self, epoch, data, optimizer, scheduler=None):
         self.accumulation_count += 1
@@ -32,13 +27,15 @@ class Trainer(object):
         sum_loss.backward()
 
         if self.accumulation_count % self.args.accumulation_steps == 0:
+            step = scheduler.state_dict()['_step_count']
             if self.args.task=="SIP":
-                self.writer.add_scalar('Loss/overall', sum_loss.item(), scheduler.state_dict()['_step_count'])
-                self.writer.add_scalar('Loss/crf', loss["loss_crf"].item(), scheduler.state_dict()['_step_count'])
-                self.writer.add_scalar('Loss/mle_e', loss["loss_mle_e"].item(), scheduler.state_dict()['_step_count'])
-                self.writer.add_scalars('Loss/all', {'overall': sum_loss.item(),'crf': loss["loss_crf"].item(),'mle_e': loss["loss_mle_e"].item()},scheduler.state_dict()['_step_count'])
+                wandb.log({
+                    "Loss/overall": sum_loss.item(),
+                    "Loss/crf": loss["loss_crf"].item(),
+                    "Loss/mle_e": loss["loss_mle_e"].item(),
+                }, step=step)
             elif self.args.task in ["AP", "SIP-AP"]:
-                self.writer.add_scalar('Loss', sum_loss.item(), scheduler.state_dict()['_step_count'])
+                wandb.log({"Loss": sum_loss.item()}, step=step)
             else:
                 raise NotImplementedError
 

@@ -64,8 +64,8 @@ def universal_sentence_embedding(sentences, mask, sqrt=True):
 
 
 class Config:
-    def __init__(self, args):
-        if args.dataset == "WISE":
+    def __init__(self, dataset):
+        if dataset == "WISE":
             self.max_target_length = 4  # (3+1)
             self.pad_index = 0
             self.soa_index = 1
@@ -184,7 +184,7 @@ class Config:
                 "Chitchat",
             ]
 
-        elif args.dataset == "MSDialog":
+        elif dataset == "MSDialog":
             self.pad_index = 0
             self.soa_index = 1
             self.eoa_index = 2
